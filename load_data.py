@@ -1,4 +1,21 @@
 
+import numpy as np
+import pyro
+import torch
+import pandas as pd 
+from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split
+
+
+
+
+# Set random seed for reproducibility
+SEED = 42
+pyro.set_rng_seed(SEED)
+torch.manual_seed(SEED)
+np.random.seed(SEED)
+
+
 # 1. Data Loading and Preprocessing
 def load_and_preprocess_data():
     # Load Wine Quality dataset

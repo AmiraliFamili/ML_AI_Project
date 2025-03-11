@@ -8,7 +8,6 @@ import pyro
 import pyro.distributions as dist
 from pyro.infer import SVI, Trace_ELBO, MCMC, NUTS, Predictive
 from pyro.optim import Adam
-
 import time
 
 class BayesianNN_MCMC:

@@ -123,6 +123,8 @@ class BayesianNN_VA:
         return losses, training_time
 
     def predict(self, x_test, num_samples=1000):
+        x_test = x_test.to("cpu") 
         predictive = Predictive(self.model, guide=self.guide, num_samples=num_samples)
         predictions = predictive(x_test)
-        return predictions["obs"].detach().numpy()
+        print(predictions.device)
+        return predictions["obs"].cpu().detach().numpy()

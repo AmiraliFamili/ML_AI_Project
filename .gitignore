@@ -1,1 +1,7 @@
 .venv/
+.vscode/
+Thumbs.db/
+.DS_Store/
+__pycache__/
+.pytest_cache/
+*.png/

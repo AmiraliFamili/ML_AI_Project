@@ -8,16 +8,11 @@ import pyro
 import pyro.distributions as dist
 from pyro.infer import SVI, Trace_ELBO, MCMC, NUTS, Predictive
 from pyro.optim import Adam
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import mean_squared_error, r2_score
-import time
-from BNN import BayesianNeuralNetwork
 from BNN_MCMC import BayesianNN_MCMC
 from BNN_VA import BayesianNN_VA
 from evaluate import evaluate_predictions
 from plotting import *
-
+from load_data import load_and_preprocess_data
 # 6. Main Execution Function
 def run_comparison():
     print("Loading and preprocessing data...")
