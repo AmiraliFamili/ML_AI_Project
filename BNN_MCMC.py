@@ -43,13 +43,37 @@ class BayesianNN_MCMC:
         x2 = F.relu(torch.matmul(x1, w2) + b2)
         mu = torch.matmul(x2, w3) + b3
 
-        # Likelihood
+        '''
+        # Likelihood : using libraries 
         sigma = pyro.sample("sigma", dist.Uniform(0.05, 0.5))
         with pyro.plate("data", x.shape[0]):
             # Observe data
             pyro.sample("obs", dist.Normal(mu.squeeze(), sigma), obs=y)
 
         return mu
+        '''
+
+        # Manual implementation of the likelihood calculation
+        # Sample sigma from uniform prior
+        sigma_raw = pyro.sample("sigma_raw", dist.Uniform(0.05, 0.5))
+        sigma = sigma_raw  # We're keeping sigma as a sample for consistency with the original model
+        
+        if y is not None:
+            # Calculate the log likelihood manually 
+            # -1/2 * log(2 pi ) - log(sigma) - 1/2 (y-mu)/sigma^2
+
+            log_likelihood = (-0.5 * torch.log(torch.tensor(2 * np.pi * sigma)) 
+                              - torch.log(sigma) 
+                              - 0.5 * ((y - mu.squeeze()) / sigma)**2)
+            
+            # Register the log likelihood with Pyro
+            # This is needed to make this compatible with Pyro's MCMC framework
+            with pyro.plate("data", x.shape[0]):
+                # We still need to use pyro.factor to contribute to the log probability
+                pyro.factor("obs_likelihood", log_likelihood)
+        
+        return mu
+
 
     def train(self, X_train, y_train, num_samples=500, warmup_steps=100):
         start_time = time.time()

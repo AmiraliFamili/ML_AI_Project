@@ -126,5 +126,5 @@ class BayesianNN_VA:
         x_test = x_test.to("cpu") 
         predictive = Predictive(self.model, guide=self.guide, num_samples=num_samples)
         predictions = predictive(x_test)
-        print(predictions.device)
+        #print(predictions.device)
         return predictions["obs"].cpu().detach().numpy()
